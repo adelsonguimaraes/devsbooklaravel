@@ -18,6 +18,28 @@ Route::get('/ping', function () {
     return ['pong'=>true];
 });
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('/401', [AuthController::class, 'unauthorized'])->name('login');
+
+Route::post('/auth/login', [AuthController::class, 'login']);
+Route::post('/auth/logout', [AuthController::class, 'logout']);
+Route::post('/auth/login', [AuthController::class, 'refresh']);
+
+Route::post('/user', [UserController::class, 'create']);
+
+Route::put('/user', [UserController::class, 'update']);
+Route::post('/user/avatar', [UserController::class, 'updateAvatar']);
+Route::post('/user/cover', [UserController::class, 'updateCover']);
+
+Route::get('/feed', FeedController::class);
+Route::get('/user/feed', [FeedController::class, 'userFeed']);
+Route::get('/user/{id}/feed', [FeedController::class, 'userFeed']);
+
+Route::get('/user', [UserController::class, 'read']);
+Route::get('/user/{id}', [UserController::class, 'read']);
+
+Route::post('/feed', FeedController::class);
+
+Route::post('/post/{id}/like', [PostController::class, 'like']);
+Route::post('/post/{id}/comment', [PostController::class, 'comment']);
+
+Route::get('/search', [SearchController::class, 'search']);
