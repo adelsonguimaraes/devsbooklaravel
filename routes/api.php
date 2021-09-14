@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\http\Controllers as Controllers;
+use App\http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,28 +20,31 @@ Route::get('/ping', function () {
     return ['pong'=>true];
 });
 
-Route::get('/401', [AuthController::class, 'unauthorized'])->name('login');
 
-Route::post('/auth/login', [AuthController::class, 'login']);
-Route::post('/auth/logout', [AuthController::class, 'logout']);
-Route::post('/auth/login', [AuthController::class, 'refresh']);
+// rota para não autorizado (token inválido)
+Route::get('/401', [Controllers\AuthController::class, 'unauthorized'])->name('login');
 
-Route::post('/user', [UserController::class, 'create']);
+Route::post('/auth/login', [Controllers\AuthController::class, 'login']);
+Route::post('/auth/logout', [Controllers\AuthController::class, 'logout']);
+Route::post('/auth/refresh', [Controllers\AuthController::class, 'refresh']);
 
-Route::put('/user', [UserController::class, 'update']);
-Route::post('/user/avatar', [UserController::class, 'updateAvatar']);
-Route::post('/user/cover', [UserController::class, 'updateCover']);
+// rota para criar o usuário
+Route::post('/user', [Controllers\AuthController::class, 'create']);
 
-Route::get('/feed', FeedController::class);
-Route::get('/user/feed', [FeedController::class, 'userFeed']);
-Route::get('/user/{id}/feed', [FeedController::class, 'userFeed']);
+Route::put('/user', [Controllers\UserController::class, 'update']);
+// Route::post('/user/avatar', [Controllers\UserController::class, 'updateAvatar']);
+// Route::post('/user/cover', [Controllers\UserController::class, 'updateCover']);
 
-Route::get('/user', [UserController::class, 'read']);
-Route::get('/user/{id}', [UserController::class, 'read']);
+// Route::get('/feed', [Controllers\FeedController::class]);
+// Route::get('/user/feed', [Controllers\FeedController::class, 'userFeed']);
+// Route::get('/user/{id}/feed', [Controllers\FeedController::class, 'userFeed']);
 
-Route::post('/feed', FeedController::class);
+// Route::get('/user', [Controllers\UserController::class, 'read']);
+// Route::get('/user/{id}', [Controllers\UserController::class, 'read']);
 
-Route::post('/post/{id}/like', [PostController::class, 'like']);
-Route::post('/post/{id}/comment', [PostController::class, 'comment']);
+// Route::post('/feed', [Controllers\FeedController::class]);
 
-Route::get('/search', [SearchController::class, 'search']);
+// Route::post('/post/{id}/like', [Controllers\PostController::class, 'like']);
+// Route::post('/post/{id}/comment', [Controllers\PostController::class, 'comment']);
+
+// Route::get('/search', [Controllers\SearchController::class, 'search']);
