@@ -32,7 +32,7 @@ Route::post('/auth/refresh', [Controllers\AuthController::class, 'refresh']);
 Route::post('/user', [Controllers\AuthController::class, 'create']);
 
 Route::put('/user', [Controllers\UserController::class, 'update']);
-// Route::post('/user/avatar', [Controllers\UserController::class, 'updateAvatar']);
+Route::post('/user/avatar', [Controllers\UserController::class, 'updateAvatar']);
 // Route::post('/user/cover', [Controllers\UserController::class, 'updateCover']);
 
 // Route::get('/feed', [Controllers\FeedController::class]);
