@@ -42,7 +42,7 @@ Route::post('/user/cover', [Controllers\UserController::class, 'updateCover']);
 // Route::get('/user', [Controllers\UserController::class, 'read']);
 // Route::get('/user/{id}', [Controllers\UserController::class, 'read']);
 
-// Route::post('/feed', [Controllers\FeedController::class]);
+Route::post('/feed', [Controllers\FeedController::class, 'create']);
 
 // Route::post('/post/{id}/like', [Controllers\PostController::class, 'like']);
 // Route::post('/post/{id}/comment', [Controllers\PostController::class, 'comment']);
