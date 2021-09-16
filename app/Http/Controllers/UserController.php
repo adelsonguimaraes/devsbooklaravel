@@ -67,21 +67,21 @@ class UserController extends Controller
         return $array;
     }
 
-    public function updateAvatar(Request $reques) {
+    public function updateAvatar(Request $request) {
         $array = ['error' => ''];
         // escolhendo os tipos de imagens
         $allowedTypes = ['image/jpg', 'image/jpeg', 'image/png'];
         $image = $request->file('avatar');
 
         if ($image) {
-            if (in_array($image->getClienteMimeType(), $allowedTypes)) {
+            if (in_array($image->getClientMimeType(), $allowedTypes)) {
                 
                 $filename = md5(time().rand(0,9999)).'.jpg';
 
                 $destPath = public_path('/media/avatars');
 
                 $img = Image::make($image->path())
-                    ->fit(200, 200)
+                    ->fit(200, 200) // cortando a imagem no centro 200x200 e diminuindo tamanho
                     ->save($destPath.'/'.$filename);
 
                 $user = User::find($this->loggedUser['id']);
@@ -89,6 +89,41 @@ class UserController extends Controller
                 $user->save();
 
                 $array['url'] = url('/media/avatars'.$filename);
+            }else{
+                $array['error'] = 'Arquivo não suportado!';
+                return $array;
+            }
+        }else{
+            $array['error'] = 'Arquivo não enviado!';
+            return $array;
+        }
+
+
+        return $array;
+    }
+
+    public function updateCover(Request $request) {
+        $array = ['error' => ''];
+        // escolhendo os tipos de imagens
+        $allowedTypes = ['image/jpg', 'image/jpeg', 'image/png'];
+        $image = $request->file('cover');
+
+        if ($image) {
+            if (in_array($image->getClientMimeType(), $allowedTypes)) {
+                
+                $filename = md5(time().rand(0,9999)).'.jpg';
+
+                $destPath = public_path('/media/covers');
+
+                $img = Image::make($image->path())
+                    ->fit(850, 310) // cortando a imagem no centro 200x200 e diminuindo tamanho
+                    ->save($destPath.'/'.$filename);
+
+                $user = User::find($this->loggedUser['id']);
+                $user->cover = $filename;
+                $user->save();
+
+                $array['url'] = url('/media/covers'.$filename);
             }else{
                 $array['error'] = 'Arquivo não suportado!';
                 return $array;
