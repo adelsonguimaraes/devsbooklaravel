@@ -119,6 +119,41 @@ class FeedController extends Controller
         return $array;
     }
 
+    public function userFeed (Request $request, $id = false) {
+        $array = ['error'=>''];
+
+        if ($id == false) {
+            // se nenhum id de usuário for informado
+            // passamos o do próprio usuário logado
+            // listando assim o seu próprio feed
+            $id = $this->loggedUser['id'];
+        }
+
+        $page = intval($request->input('page'));
+        $perPage = 2;
+
+        // pegando os posts de um determinado usuário
+        // ordenando pela data de criação
+        // limitando pela paginação
+        $postList = Post::where('id_user', $id)
+        ->orderBy('created_at', 'desc')
+        ->offset($page * $perPage)
+        ->limit($perPage)
+        ->get();
+
+        $total = Post::where('id_user', $id)->count();
+        $pageCount = ceil($total / $perPage);
+
+        // 3. Preencher as informações adicionais
+        $posts = $this->_postListToObject($postList, $this->loggedUser['id']);
+
+        $array['posts'] = $posts;
+        $array['pageCount'] = $pageCount;
+        $array['currentPage'] = $page;
+
+        return $array;
+    }
+
     private function _postListToObject($postList, $loggedId) {
         foreach($postList as $postKey => $postItem) {
 
