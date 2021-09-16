@@ -10,5 +10,5 @@ class UserRelation extends Model
     use HasFactory;
 
     public $timestamps = false;
-    protected $table = 'userralations';
+    protected $table = 'userrelations';
 }
