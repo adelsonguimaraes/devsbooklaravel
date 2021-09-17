@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Suppot\Facades\Auth;
 use App\Models\Post;
 use App\Models\PostLike;
+use App\Models\PostComment;
 
 class PostController extends Controller
 {
@@ -48,6 +49,32 @@ class PostController extends Controller
 
         $array['isLiked'] = $isLiked;
         $array['likeCount'] =  PostLike::where('id_post', $id)->count();
+
+        return $array;
+    }
+
+    public function comment(Request $request, $id) {
+        $array = ['error' => ''];
+        
+        $txt = $request->input('txt');
+
+        $postExists = Post::find($id);
+        if (!$postExists) {
+            $array['error'] = "Post não exite!";
+            return $array;
+        }
+
+        if (!$txt) {
+            $array['error'] = "Não enviou mensagem.";
+            return $array;
+        }
+        
+        $pc = new PostComment();
+        $pc->id_post = $id;
+        $pc->id_user = $this->loggedUser['id'];
+        $pc->created_at = date('Y-m-d H:i:s');
+        $pc->body = $txt;
+        $pc->save();
 
         return $array;
     }
