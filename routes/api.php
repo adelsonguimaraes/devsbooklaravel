@@ -37,7 +37,12 @@ Route::post('/user/cover', [Controllers\UserController::class, 'updateCover']);
 
 Route::get('/feed', [Controllers\FeedController::class, 'read']);
 Route::get('/user/feed', [Controllers\FeedController::class, 'userFeed']);
+Route::get('/user/photos', [Controllers\FeedController::class, 'userPhotos']);
+
 Route::get('/user/{id}/feed', [Controllers\FeedController::class, 'userFeed']);
+Route::post('/user/{id}/follow', [Controllers\UserController::class, 'follow']);
+Route::get('/user/{id}/followers', [Controllers\UserController::class, 'followers']);
+Route::get('/user/{id}/photos', [Controllers\FeedController::class, 'userPhotos']);
 
 Route::get('/user', [Controllers\UserController::class, 'read']);
 Route::get('/user/{id}', [Controllers\UserController::class, 'read']);
